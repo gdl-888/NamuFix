@@ -363,7 +363,11 @@ function batchBlockFunction(evt, opts) {
                   return tmp;
                }
             });
-         let result = await commonLoop(datas, d => waitingWin.content(wwcon => wwcon.innerHTML = `처리 완료: ${d.parameter.id ? d.parameter.id : d.parameter}`));
+         var count = 1;
+         let result = await commonLoop(datas, d => waitingWin.content(function(wwcon) {
+             wwcon.innerHTML = `처리됨: ${d.parameter.id ? d.parameter.id : d.parameter}<br><progress style="width: 100%;" min=0 max=${String(datas.length)} value=${String(count)}></progress>${datas.length}개 중 ${count}개 / ${String(parseInt(count / datas.length * 100))}% 완료`;
+             count++;
+         }));
          if (result.errors.length > 0) {
             waitingWin.content(wwcon => {
                wwcon.innerHTML = "오류가 있습니다.<br><br>" + result.errors.map(v => `${encodeHTMLComponent(v.target.id || v.target)} : ${v.error}`)
