@@ -327,7 +327,7 @@ function batchBlockFunction(evt, opts) {
             }));
          var count = 1;
          let result = await commonLoop(datas, d => waitingWin.content(function(wwcon) {
-             wwcon.innerHTML = `처리 완료: ${d.parameter.ip || d.parameter.id}<br><progress min=0 max=${String(datas.length)} value=${String(count)}></progress>`
+             wwcon.innerHTML = `처리됨: ${d.parameter.ip || d.parameter.id}<br><progress style="width: 100%;" min=0 max=${String(datas.length)} value=${String(count)}></progress><br>${String(count / datas.length * 100)}% 완료.`
              count++;
          }));
          if (result.errors.length > 0) {
