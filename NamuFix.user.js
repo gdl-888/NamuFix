@@ -4,7 +4,10 @@
 // @description 나무위키 등 더시드 사용 위키의 편집 인터페이스 등을 개선합니다.
 // @include     https://namu.wiki/*
 // @include     https://theseed.io/*
+// @include     https://gn8.pythonanywhere.com/*
+// @include     https://badawiki.site/*
 // @include     https://board.namu.wiki/*
+// @include     https://awiki.theseed.io/*
 // @version     200327.0
 // @author      LiteHell
 // @downloadURL https://namufix.wikimasonry.org/latest.js
@@ -322,7 +325,11 @@ function batchBlockFunction(evt, opts) {
                parameter: v,
                handlerName: v.ip ? "blockIP" : "blockAccount"
             }));
-         let result = await commonLoop(datas, d => waitingWin.content(wwcon => wwcon.innerHTML = `처리 완료: ${d.parameter.ip || d.parameter.id}`));
+         var count = 1;
+         let result = await commonLoop(datas, d => waitingWin.content(function(wwcon) {
+             wwcon.innerHTML = `처리 완료: ${d.parameter.ip || d.parameter.id}<br><progress min=0 max=${String(datas.length)} value=${String(count)}></progress>`
+             count++;
+         }));
          if (result.errors.length > 0) {
             waitingWin.content(wwcon => {
                wwcon.innerHTML = "오류가 있습니다.<br><br>" + result.errors.map(v => `${encodeHTMLComponent(v.target.ip || v.target.id)} : ${v.error}`)
